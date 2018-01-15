@@ -34,8 +34,8 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_americas,true),
             new Question(R.string.question_asia,true)
     };
+    private boolean[] mHasCheated = new boolean[mQuestionBank.length];
     private int mCurrentIndex = 0;
-    private boolean mIsCheater=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         if(savedInstanceState!=null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
-            mIsCheater = savedInstanceState.getBoolean(KEY_CHEATER);
+            mHasCheated = savedInstanceState.getBooleanArray(KEY_CHEATER);
         }
 
         mTrueButton = (Button)findViewById(R.id.true_button);
@@ -66,7 +66,6 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIsCheater=false;
                 nextQuestion();
             }
         });
@@ -95,7 +94,7 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userAnswer){
         boolean correctAnswer = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResultId = 0;
-        if(mIsCheater)
+        if(mHasCheated[mCurrentIndex])
             messageResultId = R.string.judgment_toast;
         else
             if(userAnswer==correctAnswer)
@@ -109,7 +108,7 @@ public class QuizActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_INDEX,mCurrentIndex);
-        outState.putBoolean(KEY_CHEATER,mIsCheater);
+        outState.putBooleanArray(KEY_CHEATER,mHasCheated);
     }
 
     @Override
@@ -121,7 +120,7 @@ public class QuizActivity extends AppCompatActivity {
         if(requestCode==REQUEST_CODE_CHEAT){
             if(data==null)
                 return;
-            mIsCheater=CheatActivity.wasAnswerShown(data);
+            mHasCheated[mCurrentIndex]=CheatActivity.wasAnswerShown(data);
         }
     }
 }
