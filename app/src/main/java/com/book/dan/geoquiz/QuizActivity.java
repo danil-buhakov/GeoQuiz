@@ -1,5 +1,6 @@
 package com.book.dan.geoquiz;
 
+import android.content.Intent;
 import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,15 +15,13 @@ import android.widget.Toast;
 public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
-
-
-
     private static final String KEY_INDEX = "index";
 
     Button mTrueButton;
     Button mFalseButton;
     Button mNextButton;
     TextView mQuestionTextView;
+    Button mCheatButton;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia,true),
@@ -47,6 +46,7 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton = (Button) findViewById(R.id.false_button);
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mNextButton = (Button) findViewById(R.id.next_button);
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +63,13 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 nextQuestion();
+            }
+        });
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(intent);
             }
         });
         updateQuestion();
