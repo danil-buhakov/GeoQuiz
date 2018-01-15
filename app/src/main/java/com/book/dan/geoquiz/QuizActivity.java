@@ -17,6 +17,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_CHEATER = "cheater";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
@@ -40,8 +41,10 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        if(savedInstanceState!=null)
-            mCurrentIndex=savedInstanceState.getInt(KEY_INDEX);
+        if(savedInstanceState!=null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+            mIsCheater = savedInstanceState.getBoolean(KEY_CHEATER);
+        }
 
         mTrueButton = (Button)findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
@@ -107,6 +110,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "onSaveInstanceState");
         outState.putInt(KEY_INDEX,mCurrentIndex);
+        outState.putBoolean(KEY_CHEATER,mIsCheater);
     }
 
     @Override
