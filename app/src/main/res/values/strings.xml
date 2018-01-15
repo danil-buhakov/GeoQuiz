@@ -16,4 +16,5 @@ freshwater lake.</string>
     <string name="prev_button">Prev</string>
     <string name="correct_toast">Correct</string>
     <string name="incorrect_toast">Incorrect</string>
+    <string name="result_text">%1$d %% Correct</string>
 </resources>

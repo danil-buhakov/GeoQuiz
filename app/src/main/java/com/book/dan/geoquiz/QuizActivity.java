@@ -33,6 +33,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_asia,true)
     };
     private int mCurrentIndex = 0;
+    private int mCorrectAnswers = 0;
 
 
 
@@ -65,23 +66,30 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 nextQuestion();
-                blockButtons(true);
             }
         });
         updateQuestion();
     }
-    
+
     private void blockButtons(boolean isEnabled){
         mTrueButton.setEnabled(isEnabled);
         mFalseButton.setEnabled(isEnabled);
     }
 
     private void nextQuestion() {
-        mCurrentIndex=(mCurrentIndex+1)%mQuestionBank.length;
-        updateQuestion();
+        if(mCurrentIndex!=(mQuestionBank.length-1)){
+            mCurrentIndex=(mCurrentIndex+1)%mQuestionBank.length;
+            updateQuestion();
+        }
+        else
+        {
+            mNextButton.setEnabled(false);
+            mQuestionTextView.setText(getString(R.string.result_text,mCorrectAnswers*100/mQuestionBank.length));
+        }
     }
 
     private void updateQuestion() {
+        blockButtons(true);
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
     }
@@ -89,8 +97,10 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userAnswer){
         boolean correctAnswer = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResultId = 0;
-        if(userAnswer==correctAnswer)
+        if(userAnswer==correctAnswer){
             messageResultId = R.string.correct_toast;
+            mCorrectAnswers++;
+        }
         else
             messageResultId = R.string.incorrect_toast;
         Toast.makeText(this, messageResultId, Toast.LENGTH_SHORT).show();
