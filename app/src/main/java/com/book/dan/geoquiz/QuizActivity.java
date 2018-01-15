@@ -3,6 +3,7 @@ package com.book.dan.geoquiz;
 import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -12,10 +13,11 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
+    private static final String TAG = "QuizActivity";
+
     Button mTrueButton;
     Button mFalseButton;
-    ImageButton mNextButton;
-    ImageButton mPrevButton;
+    Button mNextButton;
     TextView mQuestionTextView;
 
     private Question[] mQuestionBank = new Question[] {
@@ -28,16 +30,18 @@ public class QuizActivity extends AppCompatActivity {
     };
     private int mCurrentIndex = 0;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
 
         mTrueButton = (Button)findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-        mNextButton = (ImageButton) findViewById(R.id.next_button);
-        mPrevButton = (ImageButton) findViewById(R.id.prev_button);
+        mNextButton = (Button) findViewById(R.id.next_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,31 +60,11 @@ public class QuizActivity extends AppCompatActivity {
                 nextQuestion();
             }
         });
-        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextQuestion();
-            }
-        });
-        mPrevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prevQuestion();
-            }
-        });
         updateQuestion();
     }
 
     private void nextQuestion() {
         mCurrentIndex=(mCurrentIndex+1)%mQuestionBank.length;
-        updateQuestion();
-    }
-
-    private void prevQuestion() {
-        if(mCurrentIndex==0)
-            mCurrentIndex=mQuestionBank.length-1;
-        else
-            mCurrentIndex-=1;
         updateQuestion();
     }
 
@@ -97,5 +81,35 @@ public class QuizActivity extends AppCompatActivity {
         else
             messageResultId = R.string.incorrect_toast;
         Toast.makeText(this, messageResultId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
     }
 }
