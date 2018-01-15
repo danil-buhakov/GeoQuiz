@@ -108,7 +108,6 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
         outState.putInt(KEY_INDEX,mCurrentIndex);
         outState.putBoolean(KEY_CHEATER,mIsCheater);
     }
@@ -116,7 +115,9 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode!= Activity.RESULT_OK)
+        {
             return;
+        }
         if(requestCode==REQUEST_CODE_CHEAT){
             if(data==null)
                 return;

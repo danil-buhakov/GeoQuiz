@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -16,8 +17,10 @@ public class CheatActivity extends AppCompatActivity {
             "com.bignerdranch.android.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN =
             "com.bignerdranch.android.geoquiz.answer_shown";
+    private static final String KEY_CHEATER = "cheater";
 
     private boolean mAnswerTrue;
+    private boolean mIsCheater=false;
     private Button mCheatButton;
     private TextView mAnswerTextView;
 
@@ -30,6 +33,10 @@ public class CheatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null)
+            mIsCheater = savedInstanceState.getBoolean(KEY_CHEATER);
+        if(mIsCheater)
+            setAnswerShown();
         setContentView(R.layout.activity_cheat);
         mAnswerTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE,false);
         mCheatButton = (Button) findViewById(R.id.show_answer_button);
@@ -43,18 +50,25 @@ public class CheatActivity extends AppCompatActivity {
                 else{
                     mAnswerTextView.setText(R.string.false_button);
                 }
-                setAnswerShown(true);
+                setAnswerShown();
             }
         });
     }
 
-    private void setAnswerShown(boolean isAnswerShown){
+    private void setAnswerShown(){
+        mIsCheater=true;
         Intent data = new Intent();
-        data.putExtra(EXTRA_ANSWER_SHOWN,isAnswerShown);
+        data.putExtra(EXTRA_ANSWER_SHOWN,true);
         setResult(RESULT_OK,data);
     }
 
     public static boolean wasAnswerShown(Intent result){
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN,false);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_CHEATER,mIsCheater);
     }
 }
