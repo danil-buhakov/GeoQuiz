@@ -51,21 +51,29 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkAnswer(true);
+                blockButtons(false);
             }
         });
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
+                blockButtons(false);
             }
         });
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextQuestion();
+                blockButtons(true);
             }
         });
         updateQuestion();
+    }
+    
+    private void blockButtons(boolean isEnabled){
+        mTrueButton.setEnabled(isEnabled);
+        mFalseButton.setEnabled(isEnabled);
     }
 
     private void nextQuestion() {
