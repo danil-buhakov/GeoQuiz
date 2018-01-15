@@ -20,4 +20,6 @@ freshwater lake.</string>
     <string name="show_answer_button">Show Answer</string>
     <string name="cheat_button">Cheat!</string>
     <string name="judgment_toast">Cheating is wrong.</string>
+    <string name="api_string">CurrentVersion %1$d</string>
+    <string name="hints_text">Hints left %1$d</string>
 </resources>

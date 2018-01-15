@@ -2,6 +2,7 @@ package com.book.dan.geoquiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ public class QuizActivity extends AppCompatActivity {
     private Button mNextButton;
     private TextView mQuestionTextView;
     private Button mCheatButton;
+    private TextView mApiTextView;
+    private TextView mHintsView;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia,true),
@@ -35,6 +38,7 @@ public class QuizActivity extends AppCompatActivity {
     };
     private int mCurrentIndex = 0;
     private boolean mIsCheater=false;
+    private int mHints=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class QuizActivity extends AppCompatActivity {
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mNextButton = (Button) findViewById(R.id.next_button);
         mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mApiTextView = (TextView) findViewById(R.id.api_text_view);
+        mHintsView=(TextView) findViewById(R.id.cheat_text_view);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +82,8 @@ public class QuizActivity extends AppCompatActivity {
                         REQUEST_CODE_CHEAT);
             }
         });
+        mApiTextView.setText(getString(R.string.api_string,Build.VERSION.SDK_INT));
+        mHintsView.setText(getString(R.string.hints_text,mHints));
         updateQuestion();
     }
 
@@ -116,7 +124,17 @@ public class QuizActivity extends AppCompatActivity {
         if(requestCode==REQUEST_CODE_CHEAT){
             if(data==null)
                 return;
-            mIsCheater=CheatActivity.wasAnswerShown(data);
+            boolean hasLooked =CheatActivity.wasAnswerShown(data);
+            mIsCheater=hasLooked;
+            if(hasLooked){
+                mHints--;
+                mHintsView.setText(getString(R.string.hints_text,mHints));
+                if(mHints==0){
+                    mCheatButton.setEnabled(false);
+                    mHintsView.setVisibility(View.GONE);
+                }
+            }
+
         }
     }
 }
